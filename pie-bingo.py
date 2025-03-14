@@ -6,14 +6,18 @@
 # intent: generate a bingo board in the shape of a pie with pie pieces
 
 import os
+from PIL import Image
 
 def main():
     """ runs pie generator """
 
-    directory = "./images/"
+    directory = "./images/pies/"
 
     for entry in os.scandir(directory):
         print(entry.path)
+
+        img = Image.open(entry)
+        img.show()
     
 
 
