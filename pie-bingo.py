@@ -12,13 +12,25 @@ def main():
     """ runs pie generator """
 
     directory = "./images/pies/"
+    pies = []
 
+    # add images to an array
     for entry in os.scandir(directory):
-        print(entry.path)
+        try:
+            with Image.open(entry) as img:
+                print(entry.path)
+                pies.append(entry)
+        except (IOError, SyntaxError):
+            pass
 
-        img = Image.open(entry)
-        img.show()
-    
+    print(pies)
+
+    for pie in pies:
+        pass
+        
+
+        #img = Image.open(pie)
+        #img.show()
 
 
 
