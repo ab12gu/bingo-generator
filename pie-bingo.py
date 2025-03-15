@@ -39,56 +39,73 @@ def main():
         #img.show()
 
     images = [Image.open(x) for x in pies]
-
-    ## shuffle images
-    random.shuffle(images)
-
-    widths, heights = zip(*(i.size for i in images))
-
-    total_width = sum(widths)
-    total_height = sum(heights)
-
-    offset = 2.15
-
-    new_im = Image.new('RGB', (round(total_width/offset), round(total_height/offset), "WHITE"))
-
-    # create a circle 
-    length = 5
-    distance = 8
-    circles = 3
-
-    x_coords = []
-    y_coords = []
     
-    offset = 1.6
+    cards = 36
 
-    for i in range(circles):
-        diameter = (i+1) * widths[0] 
-    
-        for j in range(distance):
-            y_coords.append(offset * diameter * math.sin(2*math.pi * j/distance) )
-            x_coords.append(offset * diameter * math.cos(2*math.pi * j/distance) )
+    for c in range(cards):
 
-    print("x_coords", x_coords)
-    print("y_coords", y_coords)
+        ## shuffle images
+        random.shuffle(images)
 
-    offset = abs(min(y_coords + x_coords))
+        widths, heights = zip(*(i.size for i in images))
 
-    for im in images:
-      new_im.paste(im, (round(offset + x_coords.pop()),round(offset + y_coords.pop())))
-    
-            
+        total_width = sum(widths)
+        total_height = sum(heights)
 
-    #x_offset = 0
-    #y_offset = 0
-    #for im in images:
-      #new_im.paste(im, (x_offset,y_offset))
-      #x_offset += im.size[0]
-      #y_offset += im.size[1]
-    
-    # store and show final images
-    new_im.save('bingo-card.jpg')
-    new_im.show()
+        offset = 2.15
+
+        background = Image.open("./images/pumpkin-pie.png")
+        width = round(total_width/offset)
+        height = round(total_height/offset)
+
+        new_im = Image.new('RGB',(width, height), "WHITE")
+        rnew_im = background.resize((width, height))
+        new_im = rnew_im.convert('RGB')
+
+        # create a circle 
+        length = 5
+        distance = 8
+        circles = 3
+
+        x_coords = []
+        y_coords = []
+        
+        offset = 1.6
+
+        for i in range(circles):
+            diameter = (i+1) * widths[0] 
+        
+            for j in range(distance):
+                y_coords.append(offset * diameter * math.sin(2*math.pi * j/distance) )
+                x_coords.append(offset * diameter * math.cos(2*math.pi * j/distance) )
+
+        print("x_coords", x_coords)
+        print("y_coords", y_coords)
+
+        offset = abs(min(y_coords + x_coords))
+
+        for im in images:
+          new_im.paste(im, (round(offset + x_coords.pop()),round(offset + y_coords.pop())))
+
+        center = Image.open("./images/steve.png")
+        center = center.resize((widths[0], heights[0]))
+
+        offsety = 100
+        offsetx = 100
+       
+        new_im.paste(center, (width//2 - widths[0]+offsetx, height//2 - heights[0]+offsety))
+                
+
+        #x_offset = 0
+        #y_offset = 0
+        #for im in images:
+          #new_im.paste(im, (x_offset,y_offset))
+          #x_offset += im.size[0]
+          #y_offset += im.size[1]
+        
+        # store and show final images
+        new_im.save('./bingo-cards/card' + str(c) + '.jpg')
+        #new_im.show()
 
 
 
